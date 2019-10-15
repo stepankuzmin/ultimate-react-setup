@@ -1,0 +1,36 @@
+{
+  "name": "react-server-side-rendering",
+  "version": "0.1.0",
+  "description": "",
+  "author": "Stepan Kuzmin <to.stepan.kuzmin@gmail.com>",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "server": "node src/server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@hot-loader/react-dom": "^16.10.2",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "express": "^4.17.1",
+    "html-webpack-plugin": "^3.2.0",
+    "react-hot-loader": "^4.12.15",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.1",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-manifest-plugin": "^2.2.0"
+  }
+}

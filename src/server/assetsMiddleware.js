@@ -29,6 +29,7 @@ const devMiddleware = (req, res, next) => {
   next();
 };
 
+// eslint-disable-next-line
 const assetsMiddleware =
   process.env.NODE_ENV !== 'production' ? devMiddleware : prodMiddleware;
 

@@ -1,4 +1,3 @@
-import path from 'path';
 import React from 'react';
 import express from 'express';
 import { renderToString } from 'react-dom/server';
@@ -12,6 +11,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 const app = express();
 
 if (devMode) {
+  // eslint-disable-next-line
   const { devMiddleware, hotMiddleware } = require('./devMiddleware');
   app.use(devMiddleware).use(hotMiddleware);
 } else {

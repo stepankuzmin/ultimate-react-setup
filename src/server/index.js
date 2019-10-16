@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 
 import App from '../components/App';
 import assetsMiddleware from './assetsMiddleware';
-import { clientConfig } from '../../webpack.common';
+import { clientConfig } from '../../webpack/webpack.common';
 
 const devMode = process.env.NODE_ENV !== 'production';
 

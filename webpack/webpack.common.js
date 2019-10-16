@@ -9,7 +9,7 @@ const clientConfig = {
   entry: './src/index.js',
   output: {
     filename: devMode ? '[name].bundle.js' : '[name].[hash].bundle.js',
-    path: path.resolve(__dirname, 'build/static'),
+    path: path.resolve(__dirname, '../build/static'),
     publicPath: '/static'
   },
   plugins: [
@@ -55,7 +55,7 @@ const serverConfig = {
     server: './src/server/index.js'
   },
   output: {
-    path: path.join(__dirname, 'build'),
+    path: path.join(__dirname, '../build'),
     filename: '[name].js',
     publicPath: '/'
   },

@@ -7,8 +7,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint src",
-    "build:dev": "webpack --config webpack.dev.js",
-    "build:prod": "NODE_ENV=production webpack --config webpack.prod.js",
+    "build:dev": "webpack --config webpack/webpack.dev.js",
+    "build:prod": "NODE_ENV=production webpack --config webpack/webpack.prod.js",
     "start:dev": "NODE_ENV=development npm-run-all build:dev start-server",
     "start:prod": "NODE_ENV=production npm-run-all build:prod start-server",
     "start-server": "node ./build/server.js",

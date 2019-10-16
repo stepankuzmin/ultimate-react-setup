@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import isObject from 'is-object';
-import { clientConfig } from '../../webpack.common';
+import { clientConfig } from '../../webpack/webpack.common';
 
 const normalizeAssets = (assets) => {
   if (isObject(assets)) {

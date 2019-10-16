@@ -5,13 +5,18 @@ import { renderToString } from 'react-dom/server';
 
 import App from '../components/App';
 import assetsMiddleware from './assetsMiddleware';
+import { clientConfig } from '../../webpack.common';
+
+const devMode = process.env.NODE_ENV !== 'production';
 
 const app = express();
-app.use('/static', express.static(path.join(__dirname, '../../public')));
 
-if (process.env.NODE_ENV !== 'production') {
+if (devMode) {
   const { devMiddleware, hotMiddleware } = require('./devMiddleware');
   app.use(devMiddleware).use(hotMiddleware);
+} else {
+  const staticPath = clientConfig.output.path;
+  app.use(clientConfig.output.publicPath, express.static(staticPath));
 }
 
 app.use(assetsMiddleware);
@@ -20,13 +25,15 @@ app.use(assetsMiddleware);
 const injectStyleTags = (assets) =>
   assets
     .filter((path) => path.endsWith('.css'))
-    .map((path) => `<link href="/static/${path}" rel="stylesheet">`)
+    .map((path) => [clientConfig.output.publicPath, path].join('/'))
+    .map((path) => `<link href="${path}" rel="stylesheet">`)
     .join('\n');
 
 const injectScriptTags = (assets) =>
   assets
     .filter((path) => path.endsWith('.js'))
-    .map((path) => `<script src="/static/${path}"></script>`)
+    .map((path) => [clientConfig.output.publicPath, path].join('/'))
+    .map((path) => `<script src="${path}"></script>`)
     .join('\n');
 
 app.use('/*', (req, res) => {

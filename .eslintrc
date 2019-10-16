@@ -1,0 +1,15 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["airbnb"],
+  "plugins": ["prettier", "import", "react"],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+    "comma-dangle": ["error", "never"],
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+    "quotes": ["error", "single"]
+  }
+}

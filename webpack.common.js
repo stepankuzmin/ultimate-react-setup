@@ -39,8 +39,8 @@ const clientConfig = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1,
-              modules: true
+              modules: true,
+              importLoaders: 1
             }
           }
         ]
@@ -73,10 +73,16 @@ const serverConfig = {
       },
       {
         test: /\.css$/,
-        loader: 'css-loader',
-        options: {
-          onlyLocals: true
-        }
+        use: [
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              onlyLocals: true,
+              importLoaders: 1
+            }
+          }
+        ]
       }
     ]
   }

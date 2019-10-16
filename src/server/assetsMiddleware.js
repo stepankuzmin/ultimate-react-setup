@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import isObject from 'is-object';
+import { clientConfig } from '../../webpack.common';
 
 const normalizeAssets = (assets) => {
   if (isObject(assets)) {
@@ -11,7 +12,7 @@ const normalizeAssets = (assets) => {
 };
 
 let prodAssets = [];
-const statsPath = path.join(__dirname, '../../public/stats.json');
+const statsPath = path.join(clientConfig.output.path, 'stats.json');
 if (fs.existsSync(statsPath)) {
   const { assetsByChunkName } = JSON.parse(fs.readFileSync(statsPath));
   prodAssets = normalizeAssets(assetsByChunkName);

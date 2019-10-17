@@ -1,25 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from 'components/App';
+import reducer from 'modules';
+
+const preloadedState = window.__PRELOADED_STATE__;
+delete window.__PRELOADED_STATE__;
+const store = createStore(reducer, preloadedState);
 
 const root = document.getElementById('root');
 ReactDOM.hydrate(
   <BrowserRouter>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </BrowserRouter>,
   root
 );
 
 if (module.hot) {
+  module.hot.accept('./modules', () => {
+    // eslint-disable-next-line
+    const nextRootReducer = require('./modules').default;
+    store.replaceReducer(nextRootReducer);
+  });
+
   module.hot.accept('./components/App', () => {
     // eslint-disable-next-line
-    const App = require('./components/App').default;
+    const NextApp = require('./components/App').default;
 
     ReactDOM.render(
       <BrowserRouter>
-        <App />
+        <Provider store={store}>
+          <NextApp />
+        </Provider>
       </BrowserRouter>,
       root
     );

@@ -1,54 +1,56 @@
+/* eslint-disable implicit-arrow-linebreak */
+
 import React from 'react';
-import express from 'express';
-import { matchRoutes } from 'react-router-config';
+import serialize from 'serialize-javascript';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 
-import routes from '../routes';
+import reducer from '../modules';
 import App from '../components/App';
-import assetsMiddleware from './assetsMiddleware';
-import { clientConfig } from '../../webpack/webpack.common';
 
 const devMode = process.env.NODE_ENV !== 'production';
 
-const app = express();
+const app = devMode
+  ? require('./devServer').default
+  : require('./prodServer').default;
 
-if (devMode) {
-  // eslint-disable-next-line
-  const { devMiddleware, hotMiddleware } = require('./devMiddleware');
-  app.use(devMiddleware).use(hotMiddleware);
-} else {
-  const staticPath = clientConfig.output.path;
-  app.use(clientConfig.output.publicPath, express.static(staticPath));
-}
+const injectStyleTags = (styles) =>
+  styles.map((path) => `<link href="${path}" rel="stylesheet">`).join();
 
-app.use(assetsMiddleware);
+const injectScriptTags = (scripts) =>
+  scripts.map((path) => `<script src="${path}"></script>`).join();
 
-/* eslint-disable implicit-arrow-linebreak */
-const injectStyleTags = (assets) =>
-  assets
-    .filter((path) => path.endsWith('.css'))
-    .map((path) => [clientConfig.output.publicPath, path].join('/'))
-    .map((path) => `<link href="${path}" rel="stylesheet">`)
-    .join('\n');
-
-const injectScriptTags = (assets) =>
-  assets
-    .filter((path) => path.endsWith('.js'))
-    .map((path) => [clientConfig.output.publicPath, path].join('/'))
-    .map((path) => `<script src="${path}"></script>`)
-    .join('\n');
+const renderPage = ({ assets, html, preloadedState }) => `
+    <!doctype html>
+    <html>
+      <head>
+        <title>App</title>
+        ${injectStyleTags(assets.styles)}
+      </head>
+      <body>
+        <div id="root">${html}</div>
+        <script>
+          window.__PRELOADED_STATE__ = ${serialize(preloadedState)}
+        </script>
+        ${injectScriptTags(assets.scripts)}
+      </body>
+    </html>
+    `;
 
 app.use('/*', (req, res) => {
-  const branch = matchRoutes(routes, req.originalUrl);
-  console.log(branch);
+  const store = createStore(reducer);
+  const preloadedState = store.getState();
 
   const context = {};
   const { assets } = res.locals;
 
   const html = renderToString(
     <StaticRouter location={req.originalUrl} context={context}>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </StaticRouter>
   );
 
@@ -56,18 +58,7 @@ app.use('/*', (req, res) => {
     res.writeHead(301, { Location: context.url });
     res.end();
   } else {
-    res.send(`
-      <html>
-        <head>
-          <title>App</title>
-          ${injectStyleTags(assets)}
-        </head>
-        <body>
-          <div id="root">${html}</div>
-          ${injectScriptTags(assets)}
-        </body>
-      </html>
-    `);
+    res.send(renderPage({ assets, html, preloadedState }));
   }
 });
 

@@ -16,6 +16,7 @@
   "rules": {
     "comma-dangle": ["error", "never"],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-underscore-dangle": ["error", { "allow": ["__PRELOADED_STATE__"] }],
     "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
     "quotes": ["error", "single"]
   }

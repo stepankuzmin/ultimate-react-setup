@@ -1,7 +1,7 @@
 {
-  "name": "react-server-side-rendering",
+  "name": "ultimate-react-setup",
   "version": "0.1.0",
-  "description": "",
+  "description": "Ultimate React Setup",
   "author": "Stepan Kuzmin <to.stepan.kuzmin@gmail.com>",
   "private": true,
   "main": "index.js",
@@ -19,7 +19,9 @@
     "express": "^4.17.1",
     "is-object": "^1.0.1",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.10.2",
+    "react-router-config": "^5.1.1",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.4",

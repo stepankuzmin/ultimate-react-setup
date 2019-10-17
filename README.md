@@ -7,7 +7,8 @@
 - [x] React
 - [ ] Redux
 - [ ] Redux-Saga
-- [ ] React Router
+- [x] React Router
 - [x] CSS Modules
+- [ ] Lazy-loading
 - [x] Absolute imports
 - [x] Server-side rendering

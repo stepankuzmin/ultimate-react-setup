@@ -7,6 +7,7 @@ const devMode = process.env.NODE_ENV !== 'production';
 
 const clientConfig = {
   entry: './src/index.js',
+  stats: 'errors-warnings',
   output: {
     filename: devMode ? '[name].bundle.js' : '[name].[hash].bundle.js',
     path: path.resolve(__dirname, '../build/static'),
@@ -50,13 +51,12 @@ const clientConfig = {
 };
 
 const serverConfig = {
+  entry: './src/server/index.js',
+  stats: 'errors-warnings',
   target: 'node',
-  entry: {
-    server: './src/server/index.js'
-  },
   output: {
     path: path.join(__dirname, '../build'),
-    filename: '[name].js',
+    filename: 'server.js',
     publicPath: '/'
   },
   node: {

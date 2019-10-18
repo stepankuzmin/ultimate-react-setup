@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { loadableReady } from '@loadable/component';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from 'components/App';
@@ -12,14 +13,17 @@ delete window.__PRELOADED_STATE__;
 const store = createStore(reducer, preloadedState);
 
 const root = document.getElementById('root');
-ReactDOM.hydrate(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
-  root
-);
+
+loadableReady(() => {
+  ReactDOM.hydrate(
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>,
+    root
+  );
+});
 
 if (module.hot) {
   module.hot.accept('./modules', () => {

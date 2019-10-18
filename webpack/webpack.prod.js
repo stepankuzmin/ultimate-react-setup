@@ -1,17 +1,13 @@
 const merge = require('webpack-merge');
 const webpack = require('webpack');
-const { StatsWriterPlugin } = require('webpack-stats-plugin');
-
 const common = require('./webpack.common.js');
 
 const clientConfig = merge(common.clientConfig, {
   mode: 'production',
-  devtool: 'source-map',
   plugins: common.clientConfig.plugins.concat([
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production'
-    }),
-    new StatsWriterPlugin()
+    })
   ])
 });
 

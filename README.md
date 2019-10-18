@@ -5,7 +5,7 @@
 - [x] Webpack
 - [x] Express
 - [x] React
-- [ ] Redux
+- [x] Redux
 - [ ] Redux-Saga
 - [x] React Router
 - [x] CSS Modules

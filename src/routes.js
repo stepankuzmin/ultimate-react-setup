@@ -1,16 +1,15 @@
-import Home from 'pages/Home';
-import About from 'pages/About';
+import loadable from '@loadable/component';
 
 const routes = [
   {
     path: '/',
     exact: true,
-    component: Home
+    component: loadable(() => import('./pages/Home'))
   },
   {
     path: '/about',
     exact: true,
-    component: About
+    component: loadable(() => import('./pages/About'))
   }
 ];
 

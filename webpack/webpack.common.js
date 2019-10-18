@@ -1,24 +1,27 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
+const distPath = path.join(__dirname, '../dist');
 
 const clientConfig = {
+  target: 'web',
   entry: './src/index.js',
   stats: 'errors-warnings',
+  bail: true,
   output: {
     filename: devMode ? '[name].bundle.js' : '[name].[hash].bundle.js',
-    path: path.resolve(__dirname, '../build/static'),
+    path: path.resolve(distPath, 'static'),
     publicPath: '/static'
   },
   plugins: [
-    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: devMode ? '[name].css' : '[name].[hash].css',
       chunkFilename: devMode ? '[id].css' : '[id].[hash].css'
-    })
+    }),
+    new LoadablePlugin({ filename: 'stats.json', writeToDisk: true })
   ],
   module: {
     rules: [
@@ -51,19 +54,20 @@ const clientConfig = {
 };
 
 const serverConfig = {
+  target: 'node',
   entry: './src/server/index.js',
   stats: 'errors-warnings',
-  target: 'node',
+  bail: true,
   output: {
-    path: path.join(__dirname, '../build'),
+    path: path.resolve(distPath),
     filename: 'server.js',
     publicPath: '/'
   },
   node: {
     __dirname: true
   },
-  externals: [nodeExternals()],
-  plugins: [new CleanWebpackPlugin()],
+  externals: ['@loadable/component', nodeExternals()],
+  plugins: [],
   module: {
     rules: [
       {

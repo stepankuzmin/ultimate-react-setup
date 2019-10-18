@@ -6,6 +6,7 @@
   "plugins": [
     ["module-resolver", { "root": ["./src"] }],
     "@babel/plugin-transform-runtime",
+    "@loadable/babel-plugin",
     "react-hot-loader/babel"
   ]
 }

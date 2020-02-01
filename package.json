@@ -41,6 +41,7 @@
     "@hot-loader/react-dom": "^16.10.2",
     "@loadable/babel-plugin": "^5.10.3",
     "@loadable/webpack-plugin": "^5.7.1",
+    "@redux-saga/simple-saga-monitor": "1.1.2",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
     "babel-plugin-module-resolver": "^3.2.0",

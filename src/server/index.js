@@ -10,7 +10,8 @@ import { ChunkExtractor } from '@loadable/server';
 import { renderToString } from 'react-dom/server';
 
 import App from 'components/App';
-import { createStore } from 'modules/core';
+import { createStore, rootSaga } from 'modules/core';
+import { serverSideSaga } from 'modules/data';
 import { clientConfig } from '../../webpack/webpack.common';
 
 const devMode = process.env.NODE_ENV !== 'production';
@@ -46,26 +47,36 @@ const renderPage = ({ extractor, html, preloadedState }) => `
 const statsFile = path.join(clientConfig.output.path, 'stats.json');
 const extractor = new ChunkExtractor({ statsFile });
 
-app.use('/*', (req, res) => {
-  const store = createStore();
-  const preloadedState = store.getState();
+app.use('/*', async (req, res) => {
+  try {
+    const store = createStore();
 
-  const context = {};
-  const jsx = extractor.collectChunks(
-    <Provider store={store}>
-      <StaticRouter location={req.originalUrl} context={context}>
-        <App />
-      </StaticRouter>
-    </Provider>
-  );
+    await store.runSaga(rootSaga).toPromise();
+    await store.runSaga(serverSideSaga, req).toPromise();
 
-  const html = renderToString(jsx);
+    const preloadedState = store.getState();
 
-  if (context.url) {
-    res.writeHead(301, { Location: context.url });
-    res.end();
-  } else {
-    res.send(renderPage({ extractor, html, preloadedState }));
+    const context = {};
+    const jsx = extractor.collectChunks(
+      <Provider store={store}>
+        <StaticRouter location={req.originalUrl} context={context}>
+          <App />
+        </StaticRouter>
+      </Provider>
+    );
+
+    const html = renderToString(jsx);
+
+    if (context.url) {
+      res.writeHead(301, { Location: context.url });
+      res.end();
+    } else {
+      res.send(renderPage({ extractor, html, preloadedState }));
+    }
+
+    store.close();
+  } catch (error) {
+    res.status(500).send(error.message);
   }
 });
 

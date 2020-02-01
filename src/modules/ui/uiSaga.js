@@ -1,5 +1,4 @@
-import { put } from 'redux-saga/effects';
+// import { put } from 'redux-saga/effects';
 
-export function* uiSaga() {
-  yield put({ type: '@ui/TEST' });
-}
+// eslint-disable-next-line no-empty-function
+export function* uiSaga() {}

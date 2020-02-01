@@ -1,16 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import { loadableReady } from '@loadable/component';
 import { BrowserRouter } from 'react-router-dom';
 
 import App from 'components/App';
-import reducer from 'modules';
+import { createStore } from 'modules/core';
 
 const preloadedState = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
-const store = createStore(reducer, preloadedState);
+const store = createStore(preloadedState);
 
 const root = document.getElementById('root');
 
@@ -26,10 +25,10 @@ loadableReady(() => {
 });
 
 if (module.hot) {
-  module.hot.accept('./modules', () => {
+  module.hot.accept('./modules/core/rootReducer', () => {
     // eslint-disable-next-line
-    const nextRootReducer = require('./modules').default;
-    store.replaceReducer(nextRootReducer);
+    const { rootReducer } = require('./modules/core/rootReducer');
+    store.replaceReducer(rootReducer);
   });
 
   module.hot.accept('./components/App', () => {

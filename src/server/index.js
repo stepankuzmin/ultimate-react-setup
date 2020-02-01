@@ -6,12 +6,11 @@ import express from 'express';
 import serialize from 'serialize-javascript';
 import { ChunkExtractor } from '@loadable/server';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import { StaticRouter } from 'react-router-dom';
 import { renderToString } from 'react-dom/server';
 
-import reducer from 'modules';
 import App from 'components/App';
+import { createStore } from 'modules/core';
 import { clientConfig } from '../../webpack/webpack.common';
 
 const devMode = process.env.NODE_ENV !== 'production';
@@ -48,7 +47,7 @@ const statsFile = path.join(clientConfig.output.path, 'stats.json');
 const extractor = new ChunkExtractor({ statsFile });
 
 app.use('/*', (req, res) => {
-  const store = createStore(reducer);
+  const store = createStore();
   const preloadedState = store.getState();
 
   const context = {};

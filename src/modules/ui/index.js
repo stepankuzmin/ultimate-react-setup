@@ -1,5 +1,2 @@
-const initialState = {};
-
-const reducer = (state = initialState, action = { payload }) => state;
-
-export default reducer;
+export { uiSaga } from 'modules/ui/uiSaga';
+export { uiReducer } from 'modules/ui/uiReducer';

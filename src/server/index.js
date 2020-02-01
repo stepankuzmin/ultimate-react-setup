@@ -5,13 +5,13 @@ import React from 'react';
 import express from 'express';
 import serialize from 'serialize-javascript';
 import { Provider } from 'react-redux';
-import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
 
 import App from 'components/App';
+import { getActiveRoute } from 'routes';
 import { createStore, rootSaga } from 'modules/core';
-import { serverSideSaga } from 'modules/data';
 import { clientConfig } from '../../webpack/webpack.common';
 
 const devMode = process.env.NODE_ENV !== 'production';
@@ -49,14 +49,21 @@ const extractor = new ChunkExtractor({ statsFile });
 
 app.use('/*', async (req, res) => {
   try {
+    const activeRoute = getActiveRoute(req.originalUrl);
+    if (!activeRoute) {
+      res.status(404).send('Not found');
+      return;
+    }
+
     const store = createStore();
-
     await store.runSaga(rootSaga).toPromise();
-    await store.runSaga(serverSideSaga, req).toPromise();
 
-    const preloadedState = store.getState();
+    if (activeRoute.serverSideSaga) {
+      await store.runSaga(activeRoute.serverSideSaga, req).toPromise();
+    }
 
     const context = {};
+    const preloadedState = store.getState();
     const jsx = extractor.collectChunks(
       <Provider store={store}>
         <StaticRouter location={req.originalUrl} context={context}>

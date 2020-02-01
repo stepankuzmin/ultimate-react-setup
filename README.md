@@ -13,3 +13,4 @@
 - [ ] Lazy-loading
 - [x] Absolute imports
 - [x] Server-side rendering
+- [x] Server-side Redux-Saga

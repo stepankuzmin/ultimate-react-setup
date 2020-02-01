@@ -1,8 +1,8 @@
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
-import routes from 'routes';
 import Navigation from 'components/Navigation';
+import { routes } from 'routes';
 import styles from './App.css';
 
 const App = () => (

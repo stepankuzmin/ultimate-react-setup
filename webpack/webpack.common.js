@@ -66,7 +66,7 @@ const serverConfig = {
   node: {
     __dirname: true
   },
-  externals: ['@loadable/component', nodeExternals()],
+  externals: [nodeExternals()],
   plugins: [],
   module: {
     rules: [

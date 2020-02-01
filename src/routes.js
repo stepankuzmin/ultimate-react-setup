@@ -1,9 +1,11 @@
 import loadable from '@loadable/component';
+import { geolocateUser } from 'modules/data/dataSaga';
 
 const routes = [
   {
     path: '/',
     exact: true,
+    serverSideSaga: geolocateUser,
     component: loadable(() => import('./pages/Home'))
   },
   {

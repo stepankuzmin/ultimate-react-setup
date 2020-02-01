@@ -8,6 +8,7 @@
 - [x] Redux
 - [ ] Redux-Saga
 - [x] React Router
+- [x] Connected React Router
 - [x] CSS Modules
 - [ ] Lazy-loading
 - [x] Absolute imports

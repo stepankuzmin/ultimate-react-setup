@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 import { loadableReady } from '@loadable/component';
-import { BrowserRouter } from 'react-router-dom';
 
 import App from 'components/App';
 import { createStore } from 'modules/core';
@@ -14,14 +12,7 @@ const store = createStore(preloadedState);
 const root = document.getElementById('root');
 
 loadableReady(() => {
-  ReactDOM.hydrate(
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>,
-    root
-  );
+  ReactDOM.hydrate(<App store={store} />, root);
 });
 
 if (module.hot) {
@@ -34,14 +25,6 @@ if (module.hot) {
   module.hot.accept('./components/App', () => {
     // eslint-disable-next-line
     const NextApp = require('./components/App').default;
-
-    ReactDOM.render(
-      <BrowserRouter>
-        <Provider store={store}>
-          <NextApp />
-        </Provider>
-      </BrowserRouter>,
-      root
-    );
+    ReactDOM.render(<NextApp store={store} />, root);
   });
 }

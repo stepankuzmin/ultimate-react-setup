@@ -19,6 +19,7 @@
     "import/prefer-default-export": ["off"],
     "no-underscore-dangle": ["error", { "allow": ["__PRELOADED_STATE__"] }],
     "quotes": ["error", "single"],
-    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }]
+    "react/jsx-filename-extension": ["error", { "extensions": [".js"] }],
+    "react/prop-types": ["error", { "skipUndeclared": true }]
   }
 }

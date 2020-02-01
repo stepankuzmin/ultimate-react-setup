@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { history } from 'modules/router';
+import { Provider } from 'react-redux';
 import { loadableReady } from '@loadable/component';
+import { ConnectedRouter } from 'connected-react-router';
 
 import App from 'components/App';
 import { createStore } from 'modules/core';
@@ -12,7 +15,14 @@ const store = createStore(preloadedState);
 const root = document.getElementById('root');
 
 loadableReady(() => {
-  ReactDOM.hydrate(<App store={store} />, root);
+  ReactDOM.hydrate(
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </Provider>,
+    root
+  );
 });
 
 if (module.hot) {
@@ -25,6 +35,13 @@ if (module.hot) {
   module.hot.accept('./components/App', () => {
     // eslint-disable-next-line
     const NextApp = require('./components/App').default;
-    ReactDOM.render(<NextApp store={store} />, root);
+    ReactDOM.render(
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <NextApp />
+        </ConnectedRouter>
+      </Provider>,
+      root
+    );
   });
 }

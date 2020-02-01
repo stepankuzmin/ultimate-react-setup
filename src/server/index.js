@@ -4,6 +4,8 @@ import path from 'path';
 import React from 'react';
 import express from 'express';
 import serialize from 'serialize-javascript';
+import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 import { renderToString } from 'react-dom/server';
 
@@ -49,7 +51,13 @@ app.use('/*', (req, res) => {
   const preloadedState = store.getState();
 
   const context = {};
-  const jsx = extractor.collectChunks(<App store={store} />);
+  const jsx = extractor.collectChunks(
+    <Provider store={store}>
+      <StaticRouter location={req.originalUrl} context={context}>
+        <App />
+      </StaticRouter>
+    </Provider>
+  );
 
   const html = renderToString(jsx);
 

@@ -1,7 +1,4 @@
 import { createBrowserHistory, createMemoryHistory } from 'history';
-
-const isBrowser = !(
-  Object.prototype.toString.call(global.process) === '[object process]' && !global.process.browser
-);
+import { isBrowser } from 'utils/isBrowser';
 
 export const history = isBrowser ? createBrowserHistory() : createMemoryHistory();

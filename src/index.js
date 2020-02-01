@@ -1,18 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { history } from 'modules/router';
 import { Provider } from 'react-redux';
 import { loadableReady } from '@loadable/component';
 import { ConnectedRouter } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 
 import App from 'components/App';
-import { createStore } from 'modules/core';
+import { createStore, rootSaga } from 'modules/core';
 
 const preloadedState = window.__PRELOADED_STATE__;
 delete window.__PRELOADED_STATE__;
-const store = createStore(preloadedState);
+
+const history = createBrowserHistory();
+const store = createStore(history, preloadedState);
 
 const root = document.getElementById('root');
+store.runSaga(rootSaga);
 
 loadableReady(() => {
   ReactDOM.hydrate(

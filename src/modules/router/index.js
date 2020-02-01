@@ -1,2 +1,1 @@
-export { history } from 'modules/router/history';
-export { routerReducer } from 'modules/router/routerReducer';
+export { connectRouter as routerReducer } from 'connected-react-router';

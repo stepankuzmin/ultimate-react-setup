@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
 import { uiReducer } from 'modules/ui';
-import { dataReducer } from 'modules/data';
+import { userReducer } from 'modules/user';
 import { routerReducer } from 'modules/router';
 
-export const rootReducer = combineReducers({
+export const createRootReducer = (history) => combineReducers({
   ui: uiReducer,
-  data: dataReducer,
-  router: routerReducer
+  user: userReducer,
+  router: routerReducer(history)
 });

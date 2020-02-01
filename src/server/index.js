@@ -5,9 +5,10 @@ import React from 'react';
 import express from 'express';
 import serialize from 'serialize-javascript';
 import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor } from '@loadable/server';
 import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
 import App from 'components/App';
 import { getActiveRoute } from 'routes';
@@ -55,11 +56,12 @@ app.use('/*', async (req, res) => {
       return;
     }
 
-    const store = createStore();
+    const history = createMemoryHistory({ initialEntries: [req.originalUrl] });
+    const store = createStore(history);
     await store.runSaga(rootSaga).toPromise();
 
     if (activeRoute.serverSideSaga) {
-      await store.runSaga(activeRoute.serverSideSaga, req).toPromise();
+      await store.runSaga(activeRoute.serverSideSaga, { req }).toPromise();
     }
 
     const context = {};

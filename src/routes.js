@@ -1,7 +1,7 @@
 import loadable from '@loadable/component';
 import { matchPath } from 'react-router-dom';
 
-import { geolocateUser } from 'modules/data/dataSaga';
+import { geolocateUser } from 'modules/user/userSaga';
 
 export const routes = [
   {

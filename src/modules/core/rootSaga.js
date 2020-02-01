@@ -1,9 +1,9 @@
 import { all, spawn } from 'redux-saga/effects';
 
 import { uiSaga } from 'modules/ui';
-import { dataSaga } from 'modules/data';
+import { userSaga } from 'modules/user';
 
-const sagas = [uiSaga, dataSaga];
+const sagas = [uiSaga, userSaga];
 
 export function* rootSaga() {
   yield all(sagas.map(spawn));

@@ -17,16 +17,19 @@ const store = createStore(history, preloadedState);
 const root = document.getElementById('root');
 store.runSaga(rootSaga);
 
-loadableReady(() => {
-  ReactDOM.hydrate(
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App />
-      </ConnectedRouter>
-    </Provider>,
-    root
-  );
-});
+const jsx = (
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>
+);
+
+if (process.env.NODE_ENV === 'development') {
+  ReactDOM.render(jsx, root);
+} else {
+  loadableReady(() => ReactDOM.hydrate(jsx, root));
+}
 
 if (module.hot) {
   module.hot.accept('./modules/core/rootReducer', () => {
